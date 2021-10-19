@@ -13,17 +13,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [
-                        disableEmptyStrategyCheck: 'true',
-                        enableEmptyStrategyHelper: 'true',
-                        defaultMoxyStrategy      : 'moxy.viewstate.strategy.AddToEndSingleStrategy'
-                ]
-            }
-        }
-
     }
 
     buildTypes {
@@ -44,7 +33,7 @@ android {
 
 def replaceName(variant) {
     variant.outputs.all { output ->
-        outputFileName = 'Bozor.com mobile ' + variant.name + '-v' + variant.versionName + '.apk'
+        outputFileName = 'Mobile News Mvvm' + variant.name + '-v' + variant.versionName + '.apk'
     }
 }
 
@@ -78,12 +67,6 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
 
     implementation 'com.facebook.fresco:fresco:2.4.0'
-
-    implementation "com.github.moxy-community:moxy:2.1.2"
-    implementation "com.github.moxy-community:moxy-androidx:2.1.2"
-    implementation "com.github.moxy-community:moxy-ktx:2.1.2"
-    implementation "com.github.moxy-community:moxy-material:2.1.2"
-    kapt "com.github.moxy-community:moxy-compiler:2.1.2"
 
     implementation "com.github.valeryponomarenko.componentsmanager:androidx:2.1.0"
     api "com.intuit.sdp:sdp-android:1.0.6"
