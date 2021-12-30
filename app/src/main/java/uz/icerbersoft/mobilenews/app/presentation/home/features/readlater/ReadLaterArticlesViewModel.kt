@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import uz.icerbersoft.mobilenews.app.global.router.GlobalRouter
-import uz.icerbersoft.mobilenews.app.presentation.common.model.ArticleWrapper
-import uz.icerbersoft.mobilenews.app.presentation.common.model.ArticleWrapper.*
+import uz.icerbersoft.mobilenews.data.model.article.wrapper.LoadingState
+import uz.icerbersoft.mobilenews.data.model.article.wrapper.LoadingState.*
 import uz.icerbersoft.mobilenews.app.presentation.home.router.HomeRouter
 import uz.icerbersoft.mobilenews.domain.interactor.article.list.ArticleListInteractor
 import javax.inject.Inject
@@ -21,9 +21,9 @@ internal class ReadLaterArticlesViewModel @Inject constructor(
     private val homeRouter: HomeRouter
 ) : ViewModel() {
 
-    private val _articlesLiveData = MutableLiveData<List<ArticleWrapper>>()
+    private val _articlesLiveData = MutableLiveData<List<LoadingState>>()
 
-    val articlesLiveData: LiveData<List<ArticleWrapper>>
+    val articlesLiveData: LiveData<List<LoadingState>>
         get() = _articlesLiveData
 
     fun getReadLaterArticles() {
@@ -33,7 +33,7 @@ internal class ReadLaterArticlesViewModel @Inject constructor(
             .catch { _articlesLiveData.value = listOf(EmptyItem) }
             .onEach {
                 _articlesLiveData.value =
-                    if (it.articles.isNotEmpty()) it.articles.map { ArticleItem(it) }
+                    if (it.articles.isNotEmpty()) it.articles.map { SuccessItem(it) }
                     else (listOf(EmptyItem))
             }
             .launchIn(viewModelScope)

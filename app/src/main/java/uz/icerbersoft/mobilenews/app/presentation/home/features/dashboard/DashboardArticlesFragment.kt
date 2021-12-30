@@ -11,7 +11,6 @@ import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 import uz.icerbersoft.mobilenews.app.R
 import uz.icerbersoft.mobilenews.app.databinding.FragmentDashboardArticlesBinding
-import uz.icerbersoft.mobilenews.app.presentation.common.model.ArticleWrapper.*
 import uz.icerbersoft.mobilenews.app.presentation.home.features.dashboard.controller.BreakingArticleItemController
 import uz.icerbersoft.mobilenews.app.presentation.home.features.dashboard.controller.TopArticleItemController
 import uz.icerbersoft.mobilenews.app.presentation.home.features.dashboard.di.DashboardArticlesDaggerComponent
@@ -20,6 +19,7 @@ import uz.icerbersoft.mobilenews.app.support.controller.StateErrorItemController
 import uz.icerbersoft.mobilenews.app.support.controller.StateLoadingItemController
 import uz.icerbersoft.mobilenews.app.utils.addCallback
 import uz.icerbersoft.mobilenews.app.utils.onBackPressedDispatcher
+import uz.icerbersoft.mobilenews.data.model.article.wrapper.LoadingState.*
 import javax.inject.Inject
 
 internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_articles),
@@ -82,28 +82,24 @@ internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_
 
     private fun observeArticleList() {
         with(viewModel) {
-            breakingArticlesLiveData.observe(this@DashboardArticlesFragment) { wrappers ->
+            breakingArticlesLiveData.observe(this@DashboardArticlesFragment) { state ->
                 val itemList = ItemList.create()
-                for (item in wrappers) {
-                    when (item) {
-                        is ArticleItem -> itemList.add(item, breakingArticleController)
-                        is EmptyItem -> itemList.add(breakingEmptyController)
-                        is ErrorItem -> itemList.add(breakingErrorController)
-                        is LoadingItem -> itemList.add(breakingLoadingController)
-                    }
+                when (state) {
+                    is SuccessItem -> itemList.addAll(state.data, breakingArticleController)
+                    is EmptyItem -> itemList.add(breakingEmptyController)
+                    is ErrorItem -> itemList.add(breakingErrorController)
+                    is LoadingItem -> itemList.add(breakingLoadingController)
                 }
                 breakingArticlesAdapter.setItems(itemList)
             }
 
-            topArticlesLiveData.observe(this@DashboardArticlesFragment) { wrappers ->
+            topArticlesLiveData.observe(this@DashboardArticlesFragment) { state ->
                 val itemList = ItemList.create()
-                for (item in wrappers) {
-                    when (item) {
-                        is ArticleItem -> itemList.add(item, topArticleController)
-                        is EmptyItem -> itemList.add(topEmptyController)
-                        is ErrorItem -> itemList.add(topErrorController)
-                        is LoadingItem -> itemList.add(topLoadingController)
-                    }
+                when (state) {
+                    is SuccessItem -> itemList.addAll(state.data, topArticleController)
+                    is EmptyItem -> itemList.add(topEmptyController)
+                    is ErrorItem -> itemList.add(topErrorController)
+                    is LoadingItem -> itemList.add(topLoadingController)
                 }
                 topArticlesAdapter.setItems(itemList)
             }

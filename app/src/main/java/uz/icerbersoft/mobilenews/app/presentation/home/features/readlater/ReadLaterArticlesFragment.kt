@@ -11,7 +11,6 @@ import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 import uz.icerbersoft.mobilenews.app.R
 import uz.icerbersoft.mobilenews.app.databinding.FragmentReadLaterArticlesBinding
-import uz.icerbersoft.mobilenews.app.presentation.common.model.ArticleWrapper
 import uz.icerbersoft.mobilenews.app.presentation.home.features.readlater.controller.ReadLaterArticleItemController
 import uz.icerbersoft.mobilenews.app.presentation.home.features.readlater.di.ReadLaterArticlesDaggerComponent
 import uz.icerbersoft.mobilenews.app.support.controller.StateEmptyItemController
@@ -19,6 +18,7 @@ import uz.icerbersoft.mobilenews.app.support.controller.StateErrorItemController
 import uz.icerbersoft.mobilenews.app.support.controller.StateLoadingItemController
 import uz.icerbersoft.mobilenews.app.utils.addCallback
 import uz.icerbersoft.mobilenews.app.utils.onBackPressedDispatcher
+import uz.icerbersoft.mobilenews.data.model.article.wrapper.LoadingState.*
 import javax.inject.Inject
 
 internal class ReadLaterArticlesFragment : Fragment(R.layout.fragment_read_later_articles),
@@ -65,15 +65,13 @@ internal class ReadLaterArticlesFragment : Fragment(R.layout.fragment_read_later
     }
 
     private fun observeArticleList() {
-        viewModel.articlesLiveData.observe(this) { wrappers ->
+        viewModel.articlesLiveData.observe(this) { state ->
             val itemList = ItemList.create()
-            for (item in wrappers) {
-                when (item) {
-                    is ArticleWrapper.ArticleItem -> itemList.add(item, articleController)
-                    is ArticleWrapper.EmptyItem -> itemList.add(stateEmptyItemController)
-                    is ArticleWrapper.ErrorItem -> itemList.add(stateErrorController)
-                    is ArticleWrapper.LoadingItem -> itemList.add(stateLoadingController)
-                }
+            when (state) {
+                is SuccessItem -> itemList.addAll(state.data, articleController)
+                is EmptyItem -> itemList.add(stateEmptyItemController)
+                is ErrorItem -> itemList.add(stateErrorController)
+                is LoadingItem -> itemList.add(stateLoadingController)
             }
             easyAdapter.setItems(itemList)
         }

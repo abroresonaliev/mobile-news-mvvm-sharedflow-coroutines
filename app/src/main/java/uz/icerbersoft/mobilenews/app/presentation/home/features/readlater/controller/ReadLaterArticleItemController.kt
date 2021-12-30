@@ -5,20 +5,20 @@ import ru.surfstudio.android.easyadapter.controller.BindableItemController
 import ru.surfstudio.android.easyadapter.holder.BindableViewHolder
 import uz.icerbersoft.mobilenews.app.R
 import uz.icerbersoft.mobilenews.app.databinding.ViewHolderReadLaterArticleBinding
-import uz.icerbersoft.mobilenews.app.presentation.common.model.ArticleWrapper.ArticleItem
+import uz.icerbersoft.mobilenews.data.model.article.wrapper.LoadingState.SuccessItem
 import uz.icerbersoft.mobilenews.data.model.article.Article
 
 internal class ReadLaterArticleItemController(
     private val itemClickListener: (product: Article) -> Unit,
     private val bookmarkListener: (Article) -> Unit
-) : BindableItemController<ArticleItem, ReadLaterArticleItemController.Holder>() {
+) : BindableItemController<SuccessItem, ReadLaterArticleItemController.Holder>() {
 
     override fun createViewHolder(parent: ViewGroup): Holder = Holder(parent)
 
-    override fun getItemId(data: ArticleItem) = "$ID_TAG${data.article.articleId}"
+    override fun getItemId(data: SuccessItem) = "$ID_TAG${data.article.articleId}"
 
     inner class Holder(parent: ViewGroup) :
-        BindableViewHolder<ArticleItem>(parent, R.layout.view_holder_read_later_article) {
+        BindableViewHolder<SuccessItem>(parent, R.layout.view_holder_read_later_article) {
 
         private lateinit var article: Article
         private val binding = ViewHolderReadLaterArticleBinding.bind(itemView)
@@ -34,7 +34,7 @@ internal class ReadLaterArticleItemController(
             }
         }
 
-        override fun bind(data: ArticleItem) {
+        override fun bind(data: SuccessItem) {
             article = data.article
             with(binding) {
                 titleTextView.text = data.article.title

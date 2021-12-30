@@ -4,7 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import uz.icerbersoft.mobilenews.data.model.article.Article
-import uz.icerbersoft.mobilenews.data.model.article.ArticleListWrapper
+import uz.icerbersoft.mobilenews.data.model.article.wrapper.ArticleListWrapper
 import uz.icerbersoft.mobilenews.data.repository.article.ArticleRepository
 import javax.inject.Inject
 

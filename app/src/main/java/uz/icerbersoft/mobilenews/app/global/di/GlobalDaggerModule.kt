@@ -1,6 +1,5 @@
 package uz.icerbersoft.mobilenews.app.global.di
 
-import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.Binds

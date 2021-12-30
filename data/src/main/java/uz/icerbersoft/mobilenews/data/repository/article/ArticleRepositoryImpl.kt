@@ -7,7 +7,7 @@ import uz.icerbersoft.mobilenews.data.datasource.rest.service.RestService
 import uz.icerbersoft.mobilenews.data.mapper.entityToArticle
 import uz.icerbersoft.mobilenews.data.mapper.responseToEntity
 import uz.icerbersoft.mobilenews.data.model.article.Article
-import uz.icerbersoft.mobilenews.data.model.article.ArticleListWrapper
+import uz.icerbersoft.mobilenews.data.model.article.wrapper.ArticleListWrapper
 import java.net.ConnectException
 import java.net.UnknownHostException
 

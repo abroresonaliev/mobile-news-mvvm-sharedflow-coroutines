@@ -5,20 +5,19 @@ import ru.surfstudio.android.easyadapter.controller.BindableItemController
 import ru.surfstudio.android.easyadapter.holder.BindableViewHolder
 import uz.icerbersoft.mobilenews.app.R
 import uz.icerbersoft.mobilenews.app.databinding.ViewHolderTopArticleBinding
-import uz.icerbersoft.mobilenews.app.presentation.common.model.ArticleWrapper.ArticleItem
 import uz.icerbersoft.mobilenews.data.model.article.Article
 
 internal class TopArticleItemController(
     private val itemClickListener: (product: Article) -> Unit,
     private val bookmarkListener: (Article) -> Unit
-) : BindableItemController<ArticleItem, TopArticleItemController.Holder>() {
+) : BindableItemController<Article, TopArticleItemController.Holder>() {
 
     override fun createViewHolder(parent: ViewGroup): Holder = Holder(parent)
 
-    override fun getItemId(data: ArticleItem) = "$ID_TAG${data.article.articleId}"
+    override fun getItemId(data: Article) = "$ID_TAG${data.articleId}"
 
     inner class Holder(parent: ViewGroup) :
-        BindableViewHolder<ArticleItem>(parent, R.layout.view_holder_top_article) {
+        BindableViewHolder<Article>(parent, R.layout.view_holder_top_article) {
 
         private lateinit var article: Article
         private val binding = ViewHolderTopArticleBinding.bind(itemView)
@@ -34,15 +33,15 @@ internal class TopArticleItemController(
             }
         }
 
-        override fun bind(data: ArticleItem) {
-            article = data.article
+        override fun bind(data: Article) {
+            article = data
             with(binding) {
-                titleTextView.text = data.article.title
-                sourceTextView.text = data.article.source.name
-                publishedAtTextView.text = data.article.publishedAt
-                imageSimpleImageView.setImageURI(data.article.imageUrl)
+                titleTextView.text = data.title
+                sourceTextView.text = data.source.name
+                publishedAtTextView.text = data.publishedAt
+                imageSimpleImageView.setImageURI(data.imageUrl)
                 bookmarkImageView.apply {
-                    if (data.article.isBookmarked) setImageResource(R.drawable.ic_bookmark)
+                    if (data.isBookmarked) setImageResource(R.drawable.ic_bookmark)
                     else setImageResource(R.drawable.ic_bookmark_border)
                 }
             }

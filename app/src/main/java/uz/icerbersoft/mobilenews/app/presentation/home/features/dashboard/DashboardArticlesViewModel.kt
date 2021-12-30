@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import uz.icerbersoft.mobilenews.app.global.router.GlobalRouter
-import uz.icerbersoft.mobilenews.app.presentation.common.model.ArticleWrapper
-import uz.icerbersoft.mobilenews.app.presentation.common.model.ArticleWrapper.*
 import uz.icerbersoft.mobilenews.data.model.article.Article
+import uz.icerbersoft.mobilenews.data.model.article.wrapper.LoadingState
+import uz.icerbersoft.mobilenews.data.model.article.wrapper.LoadingState.*
 import uz.icerbersoft.mobilenews.domain.interactor.article.list.ArticleListInteractor
 import javax.inject.Inject
 
@@ -17,24 +17,20 @@ internal class DashboardArticlesViewModel @Inject constructor(
     private val router: GlobalRouter
 ) : ViewModel() {
 
-    private val _breakingArticlesLiveData = MutableLiveData<List<ArticleWrapper>>()
+    private val _breakingArticlesLiveData = MutableLiveData<LoadingState<List<Article>>>()
+    val breakingArticlesLiveData: LiveData<LoadingState<List<Article>>> = _breakingArticlesLiveData
 
-    val breakingArticlesLiveData: LiveData<List<ArticleWrapper>>
-        get() = _breakingArticlesLiveData
-
-    private val _topArticlesLiveData = MutableLiveData<List<ArticleWrapper>>()
-
-    val topArticlesLiveData: LiveData<List<ArticleWrapper>>
-        get() = _topArticlesLiveData
+    private val _topArticlesLiveData = MutableLiveData<LoadingState<List<Article>>>()
+    val topArticlesLiveData: LiveData<LoadingState<List<Article>>> = _topArticlesLiveData
 
     fun getBreakingArticles() {
         interactor.getBreakingArticles()
-            .onStart { _breakingArticlesLiveData.value = listOf(LoadingItem) }
-            .catch { _breakingArticlesLiveData.value = listOf(ErrorItem) }
-            .onEach { it ->
+            .onStart { _breakingArticlesLiveData.value = LoadingItem }
+            .catch { _breakingArticlesLiveData.value = ErrorItem }
+            .onEach {
                 _breakingArticlesLiveData.value =
-                    if (it.articles.isNotEmpty()) it.articles.map { ArticleItem(it) }
-                    else listOf(EmptyItem)
+                    if (it.articles.isNotEmpty()) SuccessItem(it.articles)
+                    else EmptyItem
             }
             .launchIn(viewModelScope)
     }
@@ -44,12 +40,12 @@ internal class DashboardArticlesViewModel @Inject constructor(
             .debounce(1500)
             .flatMapConcat {
                 interactor.getTopArticles()
-                    .onStart { _topArticlesLiveData.value = listOf(LoadingItem) }
-                    .catch { _topArticlesLiveData.value = listOf(ErrorItem) }
-                    .onEach { it ->
+                    .onStart { _topArticlesLiveData.value = LoadingItem }
+                    .catch { _topArticlesLiveData.value = ErrorItem }
+                    .onEach {
                         _topArticlesLiveData.value =
-                            if (it.articles.isNotEmpty()) it.articles.map { ArticleItem(it) }
-                            else listOf(EmptyItem)
+                            if (it.articles.isNotEmpty()) SuccessItem(it.articles)
+                            else EmptyItem
                     }
             }
             .launchIn(viewModelScope)

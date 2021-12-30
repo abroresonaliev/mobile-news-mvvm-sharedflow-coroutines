@@ -2,7 +2,7 @@ package uz.icerbersoft.mobilenews.data.repository.article
 
 import kotlinx.coroutines.flow.Flow
 import uz.icerbersoft.mobilenews.data.model.article.Article
-import uz.icerbersoft.mobilenews.data.model.article.ArticleListWrapper
+import uz.icerbersoft.mobilenews.data.model.article.wrapper.ArticleListWrapper
 
 interface ArticleRepository {
 
