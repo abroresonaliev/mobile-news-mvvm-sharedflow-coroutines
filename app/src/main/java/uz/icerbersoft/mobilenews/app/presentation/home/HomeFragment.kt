@@ -12,6 +12,7 @@ import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import uz.icerbersoft.mobilenews.app.R
 import uz.icerbersoft.mobilenews.app.databinding.FragmentHomeBinding
 import uz.icerbersoft.mobilenews.app.presentation.home.di.HomeDaggerComponent
+import uz.icerbersoft.mobilenews.app.presentation.home.router.HomeRouter
 import javax.inject.Inject
 
 internal class HomeFragment : Fragment(R.layout.fragment_home),
@@ -58,8 +59,12 @@ internal class HomeFragment : Fragment(R.layout.fragment_home),
                 }
             }
         }
+
+
         if (savedInstanceState == null)
-            viewModel.openDashboardTab()
+            viewModel.openDashboardTab(true)
+
+        observeLiveData()
     }
 
     override fun onResume() {
@@ -73,9 +78,23 @@ internal class HomeFragment : Fragment(R.layout.fragment_home),
         super.onPause()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("is_first_time", false)
+    }
+
     override fun onDestroyView() {
         supportAppNavigator = null
         super.onDestroyView()
+    }
+
+    private fun observeLiveData() {
+        viewModel.currentTabMutableLiveData.observe(viewLifecycleOwner) {
+            binding.bottomNavigationView.selectedItemId = when (it) {
+                HomeRouter.HomeTab.DashboardTab -> R.id.home_dashboard
+                HomeRouter.HomeTab.RecommendedTab -> R.id.home_recommended_news
+                HomeRouter.HomeTab.ReadLaterTab -> R.id.home_read_later_news
+            }
+        }
     }
 
     companion object {
