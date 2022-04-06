@@ -1,3 +1,0 @@
-package uz.icerbersoft.mobilenews.data.datasource.rest.retrofit.interceptor
-
-internal interface HttpErrorDispatcherComponent
