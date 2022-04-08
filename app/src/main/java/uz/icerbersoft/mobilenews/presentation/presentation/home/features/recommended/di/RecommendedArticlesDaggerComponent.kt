@@ -1,16 +1,27 @@
 package uz.icerbersoft.mobilenews.presentation.presentation.home.features.recommended.di
 
-import dagger.Subcomponent
+import dagger.Component
+import uz.icerbersoft.mobilenews.presentation.global.di.GlobalDaggerComponent
 import uz.icerbersoft.mobilenews.presentation.presentation.home.features.recommended.RecommendedArticlesFragment
 
 @RecommendedArticlesDaggerScope
-@Subcomponent(modules = [RecommendedArticlesDaggerModule::class])
+@Component(
+    dependencies = [GlobalDaggerComponent::class],
+    modules = [RecommendedArticlesDaggerModule::class]
+)
 internal interface RecommendedArticlesDaggerComponent {
 
     fun inject(fragment: RecommendedArticlesFragment)
 
-    @Subcomponent.Factory
+    @Component.Factory
     interface Factory {
-        fun create(): RecommendedArticlesDaggerComponent
+        fun create(component: GlobalDaggerComponent): RecommendedArticlesDaggerComponent
+    }
+
+    companion object {
+        fun create(component: GlobalDaggerComponent): RecommendedArticlesDaggerComponent =
+            DaggerRecommendedArticlesDaggerComponent
+                .factory()
+                .create(component)
     }
 }

@@ -20,9 +20,9 @@ internal object HomeDaggerModule {
     @Module
     interface Binder {
 
-//        @Binds
-//        @HomeDaggerScope
-//        fun viewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+        @Binds
+        @HomeDaggerScope
+        fun viewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
         @Binds
         @IntoMap
@@ -39,7 +39,7 @@ internal object HomeDaggerModule {
 
         @JvmStatic
         @Provides
-        fun homerNavigatorHolder(
+        fun navigatorHolder(
             homeRouter: HomeRouter,
         ): NavigatorHolder {
             homeRouter.setRouter(cicerone.router)

@@ -9,12 +9,13 @@ import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 import uz.icerbersoft.mobilenews.R
 import uz.icerbersoft.mobilenews.databinding.FragmentReadLaterArticlesBinding
-import uz.icerbersoft.mobilenews.presentation.utils.LoadingState.*
 import uz.icerbersoft.mobilenews.presentation.global.GlobalActivity
 import uz.icerbersoft.mobilenews.presentation.presentation.home.features.readlater.controller.ReadLaterArticleItemController
+import uz.icerbersoft.mobilenews.presentation.presentation.home.features.readlater.di.ReadLaterArticlesDaggerComponent
 import uz.icerbersoft.mobilenews.presentation.support.controller.StateEmptyItemController
 import uz.icerbersoft.mobilenews.presentation.support.controller.StateErrorItemController
 import uz.icerbersoft.mobilenews.presentation.support.controller.StateLoadingItemController
+import uz.icerbersoft.mobilenews.presentation.utils.LoadingState.*
 import uz.icerbersoft.mobilenews.presentation.utils.addCallback
 import uz.icerbersoft.mobilenews.presentation.utils.onBackPressedDispatcher
 import javax.inject.Inject
@@ -38,10 +39,8 @@ internal class ReadLaterArticlesFragment : Fragment(R.layout.fragment_read_later
         StateErrorItemController(true) { viewModel.getReadLaterArticles() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (requireActivity() as GlobalActivity)
-            .globalDaggerComponent
-            .readLaterArticlesDaggerComponent
-            .create()
+        ReadLaterArticlesDaggerComponent
+            .create((requireActivity() as GlobalActivity).globalDaggerComponent)
             .inject(this)
 
         super.onCreate(savedInstanceState)

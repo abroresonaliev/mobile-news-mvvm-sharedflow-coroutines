@@ -10,6 +10,7 @@ import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import uz.icerbersoft.mobilenews.R
 import uz.icerbersoft.mobilenews.databinding.FragmentHomeBinding
 import uz.icerbersoft.mobilenews.presentation.global.GlobalActivity
+import uz.icerbersoft.mobilenews.presentation.presentation.home.di.HomeDaggerComponent
 import uz.icerbersoft.mobilenews.presentation.presentation.home.router.HomeRouter
 import javax.inject.Inject
 
@@ -26,10 +27,8 @@ internal class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (requireActivity() as GlobalActivity)
-            .globalDaggerComponent
-            .homeDaggerComponent
-            .create()
+        HomeDaggerComponent
+            .create((requireActivity() as GlobalActivity).globalDaggerComponent)
             .inject(this)
 
         super.onCreate(savedInstanceState)

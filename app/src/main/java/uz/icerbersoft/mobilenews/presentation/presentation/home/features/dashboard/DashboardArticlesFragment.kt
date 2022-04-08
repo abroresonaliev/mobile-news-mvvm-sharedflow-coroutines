@@ -9,15 +9,16 @@ import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 import uz.icerbersoft.mobilenews.R
 import uz.icerbersoft.mobilenews.databinding.FragmentDashboardArticlesBinding
+import uz.icerbersoft.mobilenews.presentation.global.GlobalActivity
 import uz.icerbersoft.mobilenews.presentation.presentation.home.features.dashboard.controller.BreakingArticleItemController
 import uz.icerbersoft.mobilenews.presentation.presentation.home.features.dashboard.controller.TopArticleItemController
+import uz.icerbersoft.mobilenews.presentation.presentation.home.features.dashboard.di.DashboardArticlesDaggerComponent
 import uz.icerbersoft.mobilenews.presentation.support.controller.StateEmptyItemController
 import uz.icerbersoft.mobilenews.presentation.support.controller.StateErrorItemController
 import uz.icerbersoft.mobilenews.presentation.support.controller.StateLoadingItemController
+import uz.icerbersoft.mobilenews.presentation.utils.LoadingState.*
 import uz.icerbersoft.mobilenews.presentation.utils.addCallback
 import uz.icerbersoft.mobilenews.presentation.utils.onBackPressedDispatcher
-import uz.icerbersoft.mobilenews.presentation.utils.LoadingState.*
-import uz.icerbersoft.mobilenews.presentation.global.GlobalActivity
 import javax.inject.Inject
 
 internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_articles) {
@@ -49,10 +50,8 @@ internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_
         StateErrorItemController(true) { viewModel.getTopArticles() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (requireActivity() as GlobalActivity)
-            .globalDaggerComponent
-            .dashboardArticlesDaggerComponent
-            .create()
+        DashboardArticlesDaggerComponent
+            .create((requireActivity() as GlobalActivity).globalDaggerComponent)
             .inject(this)
 
         super.onCreate(savedInstanceState)

@@ -1,16 +1,27 @@
 package uz.icerbersoft.mobilenews.presentation.presentation.home.features.dashboard.di
 
-import dagger.Subcomponent
+import dagger.Component
+import uz.icerbersoft.mobilenews.presentation.global.di.GlobalDaggerComponent
 import uz.icerbersoft.mobilenews.presentation.presentation.home.features.dashboard.DashboardArticlesFragment
 
 @DashboardArticlesDaggerScope
-@Subcomponent(modules = [DashboardArticlesDaggerModule::class])
+@Component(
+    dependencies = [GlobalDaggerComponent::class],
+    modules = [DashboardArticlesDaggerModule::class]
+)
 internal interface DashboardArticlesDaggerComponent {
 
     fun inject(fragment: DashboardArticlesFragment)
 
-    @Subcomponent.Factory
+    @Component.Factory
     interface Factory {
-        fun create(): DashboardArticlesDaggerComponent
+        fun create(component: GlobalDaggerComponent): DashboardArticlesDaggerComponent
+    }
+
+    companion object {
+        fun create(component: GlobalDaggerComponent): DashboardArticlesDaggerComponent =
+            DaggerDashboardArticlesDaggerComponent
+                .factory()
+                .create(component)
     }
 }

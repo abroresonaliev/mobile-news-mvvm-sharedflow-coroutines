@@ -1,16 +1,27 @@
 package uz.icerbersoft.mobilenews.presentation.presentation.home.di
 
-import dagger.Subcomponent
+import dagger.Component
+import uz.icerbersoft.mobilenews.presentation.global.di.GlobalDaggerComponent
 import uz.icerbersoft.mobilenews.presentation.presentation.home.HomeFragment
 
 @HomeDaggerScope
-@Subcomponent(modules = [HomeDaggerModule::class])
+@Component(
+    dependencies = [GlobalDaggerComponent::class],
+    modules = [HomeDaggerModule::class]
+)
 internal interface HomeDaggerComponent {
 
     fun inject(fragment: HomeFragment)
 
-    @Subcomponent.Factory
+    @Component.Factory
     interface Factory {
-        fun create(): HomeDaggerComponent
+        fun create(component: GlobalDaggerComponent): HomeDaggerComponent
+    }
+
+    companion object {
+        fun create(component: GlobalDaggerComponent): HomeDaggerComponent =
+            DaggerHomeDaggerComponent
+                .factory()
+                .create(component)
     }
 }

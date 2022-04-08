@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import uz.icerbersoft.mobilenews.R
 import uz.icerbersoft.mobilenews.databinding.FragmentArticleDetailBinding
 import uz.icerbersoft.mobilenews.presentation.global.GlobalActivity
+import uz.icerbersoft.mobilenews.presentation.presentation.detail.di.ArticleDetailDaggerComponent
 import uz.icerbersoft.mobilenews.presentation.utils.addCallback
 import uz.icerbersoft.mobilenews.presentation.utils.onBackPressedDispatcher
 import javax.inject.Inject
@@ -22,10 +23,8 @@ internal class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail
     private lateinit var binding: FragmentArticleDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (requireActivity() as GlobalActivity)
-            .globalDaggerComponent
-            .articleDetailDaggerComponent
-            .create()
+        ArticleDetailDaggerComponent
+            .create((requireActivity() as GlobalActivity).globalDaggerComponent)
             .inject(this)
 
         super.onCreate(savedInstanceState)

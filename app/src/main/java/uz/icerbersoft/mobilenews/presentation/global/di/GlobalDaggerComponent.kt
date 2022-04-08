@@ -1,41 +1,37 @@
 package uz.icerbersoft.mobilenews.presentation.global.di
 
-import androidx.lifecycle.ViewModelProvider
-import dagger.Subcomponent
+import dagger.Component
+import uz.icerbersoft.mobilenews.presentation.application.di.ApplicationDaggerComponent
+import uz.icerbersoft.mobilenews.presentation.application.di.domain.DomainUseCaseProvider
 import uz.icerbersoft.mobilenews.presentation.global.GlobalActivity
 import uz.icerbersoft.mobilenews.presentation.global.router.GlobalRouter
-import uz.icerbersoft.mobilenews.presentation.presentation.detail.di.ArticleDetailDaggerComponent
-import uz.icerbersoft.mobilenews.presentation.presentation.home.di.HomeDaggerComponent
-import uz.icerbersoft.mobilenews.presentation.presentation.home.features.dashboard.di.DashboardArticlesDaggerComponent
-import uz.icerbersoft.mobilenews.presentation.presentation.home.features.readlater.di.ReadLaterArticlesDaggerComponent
-import uz.icerbersoft.mobilenews.presentation.presentation.home.features.recommended.di.RecommendedArticlesDaggerComponent
 import uz.icerbersoft.mobilenews.presentation.presentation.home.router.HomeRouter
 
 @GlobalScope
-@Subcomponent(
+@Component(
+    dependencies = [ApplicationDaggerComponent::class],
     modules = [
         GlobalDaggerModule::class,
-        GlobalDaggerModuleNavigation::class,
-        GlobalDaggerModuleSubComponents::class
+        GlobalDaggerModuleNavigation::class
     ]
 )
-internal interface GlobalDaggerComponent {
+internal interface GlobalDaggerComponent : DomainUseCaseProvider {
 
     val globalRouter: GlobalRouter
+
     val homeRouter: HomeRouter
-
-    val viewModelFactory: ViewModelProvider.Factory
-
-    val articleDetailDaggerComponent: ArticleDetailDaggerComponent.Factory
-    val dashboardArticlesDaggerComponent: DashboardArticlesDaggerComponent.Factory
-    val homeDaggerComponent: HomeDaggerComponent.Factory
-    val readLaterArticlesDaggerComponent: ReadLaterArticlesDaggerComponent.Factory
-    val recommendedArticlesDaggerComponent: RecommendedArticlesDaggerComponent.Factory
 
     fun inject(activity: GlobalActivity)
 
-    @Subcomponent.Factory
+    @Component.Factory
     interface Factory {
-        fun create(): GlobalDaggerComponent
+        fun create(component: ApplicationDaggerComponent): GlobalDaggerComponent
+    }
+
+    companion object {
+        fun create(component: ApplicationDaggerComponent): GlobalDaggerComponent =
+            DaggerGlobalDaggerComponent
+                .factory()
+                .create(component)
     }
 }

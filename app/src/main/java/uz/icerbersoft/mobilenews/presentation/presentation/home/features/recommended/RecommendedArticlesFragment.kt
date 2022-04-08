@@ -9,12 +9,13 @@ import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 import uz.icerbersoft.mobilenews.R
 import uz.icerbersoft.mobilenews.databinding.FragmentRecommendedNewsBinding
-import uz.icerbersoft.mobilenews.presentation.utils.LoadingState.*
 import uz.icerbersoft.mobilenews.presentation.global.GlobalActivity
 import uz.icerbersoft.mobilenews.presentation.presentation.home.features.recommended.controller.RecommendedArticleItemController
+import uz.icerbersoft.mobilenews.presentation.presentation.home.features.recommended.di.RecommendedArticlesDaggerComponent
 import uz.icerbersoft.mobilenews.presentation.support.controller.StateEmptyItemController
 import uz.icerbersoft.mobilenews.presentation.support.controller.StateErrorItemController
 import uz.icerbersoft.mobilenews.presentation.support.controller.StateLoadingItemController
+import uz.icerbersoft.mobilenews.presentation.utils.LoadingState.*
 import uz.icerbersoft.mobilenews.presentation.utils.addCallback
 import uz.icerbersoft.mobilenews.presentation.utils.onBackPressedDispatcher
 import javax.inject.Inject
@@ -28,10 +29,8 @@ internal class RecommendedArticlesFragment : Fragment(R.layout.fragment_recommen
     private lateinit var binding: FragmentRecommendedNewsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (requireActivity() as GlobalActivity)
-            .globalDaggerComponent
-            .recommendedArticlesDaggerComponent
-            .create()
+        RecommendedArticlesDaggerComponent
+            .create((requireActivity() as GlobalActivity).globalDaggerComponent)
             .inject(this)
 
         super.onCreate(savedInstanceState)

@@ -30,9 +30,8 @@ internal class GlobalActivity : AppCompatActivity() {
         private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as Application).applicationDaggerComponent
-            .globalDaggerComponent
-            .create()
+        GlobalDaggerComponent
+            .create((application as Application).applicationDaggerComponent)
             .also { globalDaggerComponent = it }
             .inject(this)
 
