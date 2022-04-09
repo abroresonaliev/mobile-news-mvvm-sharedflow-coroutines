@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mobile News MVVM Kotlin Coroutines</string>
+    <string name="app_name">MVVM Coroutines</string>
 
     <string name="title_bottom_dashboard">Today</string>
     <string name="title_bottom_recommended">For you</string>
