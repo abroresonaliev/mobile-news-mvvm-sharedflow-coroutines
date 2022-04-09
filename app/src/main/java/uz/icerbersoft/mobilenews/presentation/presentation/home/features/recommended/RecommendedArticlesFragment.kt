@@ -53,8 +53,8 @@ internal class RecommendedArticlesFragment : Fragment(R.layout.fragment_recommen
         binding = FragmentRecommendedNewsBinding.bind(view)
 
         with(binding) {
-            recommendedArticlesRv.adapter = easyAdapter
-            recommendedArticlesRv.itemAnimator = null
+            recyclerView.adapter = easyAdapter
+            recyclerView.itemAnimator = null
         }
 
         if (savedInstanceState == null)

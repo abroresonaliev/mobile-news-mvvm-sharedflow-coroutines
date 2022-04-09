@@ -1,11 +1,11 @@
 package uz.icerbersoft.mobilenews.data.mapper
 
+import uz.icerbersoft.mobilenews.data.utils.date.toFormattedDate
 import uz.icerbersoft.mobilenews.domain.data.entity.article.Article
 import uz.icerbersoft.mobilenews.domain.data.entity.article.ArticleEntity
 import uz.icerbersoft.mobilenews.domain.data.entity.source.Source
 import uz.icerbersoft.mobilenews.domain.data.entity.article.ArticleResponse
 import uz.icerbersoft.mobilenews.domain.data.entity.source.SourceResponse
-import uz.icerbersoft.mobilenews.data.utils.date.mapToString
 
 internal fun ArticleEntity.entityToArticle(): Article =
     Article(
@@ -27,7 +27,7 @@ internal fun ArticleResponse.responseToEntity(): ArticleEntity =
         author = author ?: "",
         content = content ?: "",
         description = description ?: "",
-        publishedAt = publishedAt?.mapToString("MMM dd hh:mm") ?: "",
+        publishedAt = publishedAt?.toFormattedDate( ) ?: "",
         source = source.name,
         sourceId = source.id,
         title = title,

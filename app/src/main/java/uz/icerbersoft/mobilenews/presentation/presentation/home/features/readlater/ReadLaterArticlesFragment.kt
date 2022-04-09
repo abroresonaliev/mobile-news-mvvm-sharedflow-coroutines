@@ -53,8 +53,8 @@ internal class ReadLaterArticlesFragment : Fragment(R.layout.fragment_read_later
         binding = FragmentReadLaterArticlesBinding.bind(view)
 
         with(binding) {
-            readLaterArticlesRv.adapter = easyAdapter
-            readLaterArticlesRv.itemAnimator = null
+            recyclerView.adapter = easyAdapter
+            recyclerView.itemAnimator = null
         }
 
         if (savedInstanceState == null)

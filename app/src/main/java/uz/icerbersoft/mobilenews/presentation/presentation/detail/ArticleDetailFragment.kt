@@ -36,28 +36,39 @@ internal class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentArticleDetailBinding.bind(view)
 
+        with(binding){
+            backIv.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        }
+
         viewModel.setArticleId(checkNotNull(arguments?.getString(KEY_ARTICLE_ID)))
         viewModel.getArticleDetail()
     }
 
     private fun observeArticleDetail() {
-        viewModel.articleDetailLiveData.observe(this) { resource ->
-            when (resource) {
-                is ArticleDetailResource.Loading -> {
+        viewModel.articleDetailLiveData.observe(this) { state ->
+            when (state) {
+                is ArticleDetailLoadingState.Loading -> {
                 }
-                is ArticleDetailResource.Failure -> {
+                is ArticleDetailLoadingState.Failure -> {
                 }
-                is ArticleDetailResource.Success -> {
+                is ArticleDetailLoadingState.Success -> {
                     with(binding) {
-                        imageSimpleImageView.setImageURI(resource.article.imageUrl)
-                        publishedAtTextView.text = resource.article.publishedAt
-                        titleTextView.text = resource.article.title
-                        sourceTextView.text = resource.article.source.name
-                        contentTextView.text = resource.article.content
+                        detailImageSdv.setImageURI(state.article.imageUrl)
+                        publishedAtTextView.text = state.article.publishedAt
+                        titleTextView.text = state.article.title
+                        sourceTextView.text = state.article.source.name
+                        contentTextView.text = state.article.content
 
-                        shareButton.setOnClickListener {
+                        bookmarkIv.apply {
+                            if (state.article.isBookmarked) setImageResource(R.drawable.ic_bookmark)
+                            else setImageResource(R.drawable.ic_bookmark_border)
+                        }
+
+                        bookmarkIv.setOnClickListener { viewModel.updateBookmark(state.article) }
+
+                        shareIv.setOnClickListener {
                             val shareText =
-                                "${resource.article.title}\n\nMobile news - interesting news in your mobile.\n\n${resource.article.url}"
+                                "${state.article.title}\n\nMobile news - interesting news in your mobile.\n\n${state.article.url}"
 
                             val sendIntent: Intent = Intent().apply {
                                 action = Intent.ACTION_SEND

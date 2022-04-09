@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 import uz.icerbersoft.mobilenews.R
+import uz.icerbersoft.mobilenews.data.utils.date.toFormattedDate
 import uz.icerbersoft.mobilenews.databinding.FragmentDashboardArticlesBinding
 import uz.icerbersoft.mobilenews.presentation.global.GlobalActivity
 import uz.icerbersoft.mobilenews.presentation.presentation.home.features.dashboard.controller.BreakingArticleItemController
@@ -19,6 +20,7 @@ import uz.icerbersoft.mobilenews.presentation.support.controller.StateLoadingIte
 import uz.icerbersoft.mobilenews.presentation.utils.LoadingState.*
 import uz.icerbersoft.mobilenews.presentation.utils.addCallback
 import uz.icerbersoft.mobilenews.presentation.utils.onBackPressedDispatcher
+import java.util.*
 import javax.inject.Inject
 
 internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_articles) {
@@ -65,10 +67,11 @@ internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_
         binding = FragmentDashboardArticlesBinding.bind(view)
 
         with(binding) {
-            breakingArticlesRv.adapter = breakingArticlesAdapter
-            breakingArticlesRv.itemAnimator = null
-            topArticlesRv.adapter = topArticlesAdapter
-            topArticlesRv.itemAnimator = null
+            todayDateTv.text = Date().toFormattedDate("EEEE, dd MMMM")
+            breakingArticleRv.adapter = breakingArticlesAdapter
+            breakingArticleRv.itemAnimator = null
+            topArticleRv.adapter = topArticlesAdapter
+            topArticleRv.itemAnimator = null
         }
         if (savedInstanceState == null) {
             with(viewModel) {

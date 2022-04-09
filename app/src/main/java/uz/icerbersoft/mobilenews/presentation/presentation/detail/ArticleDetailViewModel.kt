@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import uz.icerbersoft.mobilenews.domain.data.entity.article.Article
 import uz.icerbersoft.mobilenews.presentation.presentation.detail.router.ArticleDetailRouter
 import uz.icerbersoft.mobilenews.domain.usecase.article.detail.ArticleDetailUseCase
 import javax.inject.Inject
@@ -24,18 +23,26 @@ class ArticleDetailViewModel @Inject constructor(
         currentArticleId = value
     }
 
-    private val _articleDetailLiveData = MutableLiveData<ArticleDetailResource>()
-    val articleDetailLiveData: LiveData<ArticleDetailResource>
+    private val _articleDetailLiveData = MutableLiveData<ArticleDetailLoadingState>()
+    val articleDetailLiveData: LiveData<ArticleDetailLoadingState>
         get() = _articleDetailLiveData
 
 
     fun getArticleDetail() {
         useCase
             .getArticle(currentArticleId)
-            .onStart { _articleDetailLiveData.value = ArticleDetailResource.Loading }
-            .catch { _articleDetailLiveData.value = ArticleDetailResource.Failure(it) }
-            .onEach { _articleDetailLiveData.value = ArticleDetailResource.Success(it) }
+            .onStart { _articleDetailLiveData.value = ArticleDetailLoadingState.Loading }
+            .catch { _articleDetailLiveData.value = ArticleDetailLoadingState.Failure(it) }
+            .onEach { _articleDetailLiveData.value = ArticleDetailLoadingState.Success(it) }
             .launchIn(viewModelScope)
+    }
+
+    fun updateBookmark(article: Article) {
+        viewModelScope.launch {
+            useCase
+                .updateBookmark(article)
+                .collect { }
+        }
     }
 
     fun back() = router.back()
