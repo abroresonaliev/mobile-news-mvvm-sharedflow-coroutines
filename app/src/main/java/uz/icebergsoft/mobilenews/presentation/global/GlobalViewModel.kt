@@ -8,7 +8,11 @@ class GlobalViewModel @Inject constructor(
     private val router: GlobalRouter
 ) : ViewModel() {
 
-    fun onActivityCreate() {
+    init {
         router.openHomeScreen()
+    }
+
+    fun onActivityCreate() {
+
     }
 }
