@@ -8,7 +8,7 @@ android {
     ndkVersion "21.3.6528147"
 
     defaultConfig {
-        applicationId "uz.icebergsoft.mobilenews.app.mvvm_kotlin_coroutines"
+        applicationId "uz.icebergsoft.mobilenews.mvvm_kotlin_coroutines"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

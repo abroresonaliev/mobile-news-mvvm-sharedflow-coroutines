@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MVVM Coroutines</string>
 
-    <string name="title_bottom_dashboard">Today</string>
+    <string name="title_bottom_dashboard">Breaking news</string>
     <string name="title_bottom_recommended">For you</string>
     <string name="title_bottom_read_later">Read later</string>
 
@@ -10,4 +10,5 @@
     <string name="state_error_title">Sorry! … An error has occurred :(</string>
     <string name="state_error_action">Retry</string>
 
+    <string name="title_settings">Settings</string>
 </resources>
