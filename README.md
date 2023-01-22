@@ -1,6 +1,6 @@
 # Mobile news is sample project
 
-In project used: [Kotlin Coroutines](https://github.com/Kotlin/kotlinx.coroutines), Room, [Dagger2](https://github.com/google/dagger), EasyAdapter([surf-studio](https://github.com/surfstudio/EasyAdapter)), Cicerone([terratok](https://github.com/terrakok/Cicerone)), MVVM
+In project used: [Kotlin Coroutines](https://github.com/Kotlin/kotlinx.coroutines), Room, [Dagger2](https://github.com/google/dagger), EasyAdapter([surf-studio](https://github.com/surfstudio/EasyAdapter)), Cicerone([terratok](https://github.com/terrakok/Cicerone)), MVVM with SharedFlow and StateFlow
 
 articles taken from [News Api](https://newsapi.org/)
 
