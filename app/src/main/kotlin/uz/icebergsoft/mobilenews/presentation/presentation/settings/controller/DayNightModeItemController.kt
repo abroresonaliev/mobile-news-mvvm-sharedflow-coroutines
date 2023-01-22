@@ -1,4 +1,4 @@
-package uz.icebergsoft.mobilenews.presentation.presentation.setttings.controller
+package uz.icebergsoft.mobilenews.presentation.presentation.settings.controller
 
 import android.view.ViewGroup
 import ru.surfstudio.android.easyadapter.controller.BindableItemController

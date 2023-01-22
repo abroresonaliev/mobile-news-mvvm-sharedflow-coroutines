@@ -43,7 +43,7 @@ internal class GlobalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(dayNightModeManager.getDayNightMode())
         setContentView(binding.root)
-        viewModel.onActivityCreate()
+        viewModel.onActivityCreated()
     }
 
     fun updateNightMode(dayNightMode: Int) {

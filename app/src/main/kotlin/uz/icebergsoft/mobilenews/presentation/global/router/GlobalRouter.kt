@@ -2,7 +2,7 @@ package uz.icebergsoft.mobilenews.presentation.global.router
 
 import androidx.fragment.app.Fragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
-import uz.icebergsoft.mobilenews.presentation.presentation.setttings.SettingsFragment
+import uz.icebergsoft.mobilenews.presentation.presentation.settings.SettingsFragment
 import uz.icebergsoft.mobilenews.presentation.presentation.detail.ArticleDetailFragment
 import uz.icebergsoft.mobilenews.presentation.presentation.home.HomeFragment
 import uz.icebergsoft.mobilenews.presentation.support.base.CiceroneRouter

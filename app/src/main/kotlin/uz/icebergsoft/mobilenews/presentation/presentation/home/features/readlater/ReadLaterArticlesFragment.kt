@@ -5,6 +5,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 import uz.icebergsoft.mobilenews.R
@@ -45,7 +48,6 @@ internal class ReadLaterArticlesFragment : Fragment(R.layout.fragment_read_later
 
         super.onCreate(savedInstanceState)
         onBackPressedDispatcher.addCallback(this) { viewModel.back() }
-        observeLiveData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,21 +59,23 @@ internal class ReadLaterArticlesFragment : Fragment(R.layout.fragment_read_later
             recyclerView.itemAnimator = null
         }
 
-        if (savedInstanceState == null)
-            viewModel.getReadLaterArticles()
+        subscribeSharedFlows()
     }
 
-    private fun observeLiveData() {
-        viewModel.articlesLiveData.observe(this) { state ->
-            val itemList = ItemList.create()
-            when (state) {
-                is LoadingState -> itemList.add(stateLoadingController)
-                is SuccessState -> itemList.addAll(state.data, articleController)
-                is EmptyState -> itemList.add(stateEmptyItemController)
-                is ErrorState -> itemList.add(stateErrorController)
+    private fun subscribeSharedFlows() {
+        viewModel
+            .articlesSharedFlow
+            .onEach { state ->
+                val itemList = ItemList.create()
+                when (state) {
+                    is SuccessState -> itemList.addAll(state.data, articleController)
+                    is LoadingState -> itemList.add(stateLoadingController)
+                    is EmptyState -> itemList.add(stateEmptyItemController)
+                    is ErrorState -> itemList.add(stateErrorController)
+                }
+                easyAdapter.setItems(itemList)
             }
-            easyAdapter.setItems(itemList)
-        }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     companion object {

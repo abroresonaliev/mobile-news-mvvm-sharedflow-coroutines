@@ -5,6 +5,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 import uz.icebergsoft.mobilenews.R
@@ -58,8 +61,6 @@ internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_
 
         super.onCreate(savedInstanceState)
         onBackPressedDispatcher.addCallback(this) { requireActivity().finish() }
-
-        observeLiveData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,17 +75,14 @@ internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_
             topArticleRv.itemAnimator = null
             settingsIv.setOnClickListener { viewModel.openSettingsScreen() }
         }
-        if (savedInstanceState == null) {
-            with(viewModel) {
-                getBreakingArticles()
-                getTopArticles()
-            }
-        }
+        subscribeSharedFlows()
     }
 
-    private fun observeLiveData() {
-        with(viewModel) {
-            breakingArticlesLiveData.observe(this@DashboardArticlesFragment) { state ->
+    private fun subscribeSharedFlows() {
+
+        viewModel
+            .breakingArticlesSharedFlow
+            .onEach { state ->
                 val itemList = ItemList.create()
                 when (state) {
                     is LoadingState -> itemList.add(breakingLoadingController)
@@ -94,8 +92,11 @@ internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_
                 }
                 breakingArticlesAdapter.setItems(itemList)
             }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
 
-            topArticlesLiveData.observe(this@DashboardArticlesFragment) { state ->
+        viewModel
+            .topArticlesSharedFlow
+            .onEach { state ->
                 val itemList = ItemList.create()
                 when (state) {
                     is SuccessState -> itemList.addAll(state.data, topArticleController)
@@ -105,7 +106,7 @@ internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_
                 }
                 topArticlesAdapter.setItems(itemList)
             }
-        }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     companion object {

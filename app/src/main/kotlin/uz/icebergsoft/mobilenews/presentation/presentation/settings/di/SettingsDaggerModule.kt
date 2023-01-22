@@ -1,11 +1,11 @@
-package uz.icebergsoft.mobilenews.presentation.presentation.setttings.di
+package uz.icebergsoft.mobilenews.presentation.presentation.settings.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import uz.icebergsoft.mobilenews.presentation.presentation.setttings.SettingsViewModel
+import uz.icebergsoft.mobilenews.presentation.presentation.settings.SettingsViewModel
 import uz.icebergsoft.mobilenews.presentation.support.viewmodel.ViewModelFactory
 import uz.icebergsoft.mobilenews.presentation.support.viewmodel.ViewModelKey
 

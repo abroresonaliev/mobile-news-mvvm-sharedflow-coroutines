@@ -1,11 +1,11 @@
 package uz.icebergsoft.mobilenews.domain.usecase.article.detail
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
 import uz.icebergsoft.mobilenews.domain.data.repository.article.ArticleRepository
 import uz.icebergsoft.mobilenews.domain.usecase.bookmark.BookmarkUseCase
+import uz.icebergsoft.mobilenews.presentation.support.event.LoadingEvent
 import javax.inject.Inject
 
 class ArticleDetailUseCaseImpl @Inject constructor(
@@ -13,8 +13,16 @@ class ArticleDetailUseCaseImpl @Inject constructor(
     private val bookmarkUseCase: BookmarkUseCase
 ) : ArticleDetailUseCase {
 
-    override fun getArticle(articleId: String): Flow<Article> {
+    private val _articleDetailSharedFlow = MutableSharedFlow<LoadingEvent<Article>>()
+    override val articleDetailSharedFlow: SharedFlow<LoadingEvent<Article>>
+        get() = _articleDetailSharedFlow.asSharedFlow()
+
+    override fun getArticle(articleId: String): Flow<Unit> {
         return articleRepository.getArticle(articleId)
+            .onStart { _articleDetailSharedFlow.emit(LoadingEvent.LoadingState) }
+            .onEach { _articleDetailSharedFlow.emit(LoadingEvent.SuccessState(it)) }
+            .catch { _articleDetailSharedFlow.emit(LoadingEvent.ErrorState(it.message)) }
+            .map { Unit }
             .flowOn(Dispatchers.IO)
     }
 

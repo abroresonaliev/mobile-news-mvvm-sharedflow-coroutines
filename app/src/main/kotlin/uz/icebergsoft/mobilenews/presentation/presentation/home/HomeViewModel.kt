@@ -1,20 +1,32 @@
 package uz.icebergsoft.mobilenews.presentation.presentation.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.*
+import uz.icebergsoft.mobilenews.domain.usecase.home.HomeUseCase
 import uz.icebergsoft.mobilenews.presentation.presentation.home.router.HomeRouter
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
-    private val router: HomeRouter
+    private val router: HomeRouter,
+    private val useCase: HomeUseCase
 ) : ViewModel() {
 
-    private val _currentTabMutableLiveData = MutableLiveData<HomeRouter.HomeTab>()
-    val currentTabMutableLiveData: LiveData<HomeRouter.HomeTab> = _currentTabMutableLiveData
+    private val _currentTabSharedFlow = MutableSharedFlow<HomeRouter.HomeTab>()
+    val currentTabSharedFlow: SharedFlow<HomeRouter.HomeTab>
+        get() = _currentTabSharedFlow.asSharedFlow()
 
     init {
-        router.setNavigationListener { _currentTabMutableLiveData.postValue(it) }
+        router.setNavigationListener { _currentTabSharedFlow.tryEmit(it) }
+
+        useCase
+            .isFirstTimeStateFlow
+            .onEach { if (it) openDashboardTab(true) }
+            .launchIn(viewModelScope)
+    }
+
+    fun onFragmentCreated() {
+        useCase.onFragmentCreated()
     }
 
     fun openDashboardTab(isNotifyRequired: Boolean = false) {

@@ -1,8 +1,8 @@
-package uz.icebergsoft.mobilenews.presentation.presentation.setttings.di
+package uz.icebergsoft.mobilenews.presentation.presentation.settings.di
 
 import dagger.Component
 import uz.icebergsoft.mobilenews.presentation.global.di.GlobalDaggerComponent
-import uz.icebergsoft.mobilenews.presentation.presentation.setttings.SettingsFragment
+import uz.icebergsoft.mobilenews.presentation.presentation.settings.SettingsFragment
 
 @SettingsDaggerScope
 @Component(

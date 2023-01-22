@@ -6,6 +6,8 @@ import uz.icebergsoft.mobilenews.domain.usecase.article.readlater.ReadLaterArtic
 import uz.icebergsoft.mobilenews.domain.usecase.article.recommended.RecommendedArticlesUseCase
 import uz.icebergsoft.mobilenews.domain.usecase.bookmark.BookmarkUseCase
 import uz.icebergsoft.mobilenews.domain.usecase.daynight.DayNightModeUseCase
+import uz.icebergsoft.mobilenews.domain.usecase.global.GlobalUseCase
+import uz.icebergsoft.mobilenews.domain.usecase.home.HomeUseCase
 
 interface DomainUseCaseProvider {
     val articleDetailUseCase: ArticleDetailUseCase
@@ -13,5 +15,8 @@ interface DomainUseCaseProvider {
     val dayNightModeUseCase: DayNightModeUseCase
     val readLaterArticlesUseCase: ReadLaterArticlesUseCase
     val recommendedArticlesUseCase: RecommendedArticlesUseCase
+
     val bookmarkUseCase: BookmarkUseCase
+    val globalUseCase: GlobalUseCase
+    val homeUseCase: HomeUseCase
 }

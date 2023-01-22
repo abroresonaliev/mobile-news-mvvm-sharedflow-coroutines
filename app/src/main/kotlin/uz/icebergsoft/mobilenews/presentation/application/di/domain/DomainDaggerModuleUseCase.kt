@@ -16,6 +16,10 @@ import uz.icebergsoft.mobilenews.domain.usecase.bookmark.BookmarkUseCase
 import uz.icebergsoft.mobilenews.domain.usecase.bookmark.BookmarkUseCaseImpl
 import uz.icebergsoft.mobilenews.domain.usecase.daynight.DayNightModeUseCase
 import uz.icebergsoft.mobilenews.domain.usecase.daynight.DayNightModeUseCaseImpl
+import uz.icebergsoft.mobilenews.domain.usecase.global.GlobalUseCase
+import uz.icebergsoft.mobilenews.domain.usecase.global.GlobalUseCaseImpl
+import uz.icebergsoft.mobilenews.domain.usecase.home.HomeUseCase
+import uz.icebergsoft.mobilenews.domain.usecase.home.HomeUseCaseImpl
 import javax.inject.Singleton
 
 @Module(
@@ -65,5 +69,19 @@ internal object DomainDaggerModuleUseCase {
             articleRepository: ArticleRepository
         ): BookmarkUseCase =
             BookmarkUseCaseImpl(articleRepository)
+
+        @JvmStatic
+        @Provides
+        @Singleton
+        fun provideGlobalUseCase(
+        ): GlobalUseCase =
+            GlobalUseCaseImpl()
+
+        @JvmStatic
+        @Provides
+        @Singleton
+        fun provideHomeUseCase(
+        ): HomeUseCase =
+            HomeUseCaseImpl()
     }
 }

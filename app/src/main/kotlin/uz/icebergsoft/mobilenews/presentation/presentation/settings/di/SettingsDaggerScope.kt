@@ -1,4 +1,4 @@
-package uz.icebergsoft.mobilenews.presentation.presentation.setttings.di
+package uz.icebergsoft.mobilenews.presentation.presentation.settings.di
 
 import javax.inject.Scope
 

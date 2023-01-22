@@ -1,16 +1,11 @@
-package uz.icebergsoft.mobilenews.presentation.presentation.setttings
+package uz.icebergsoft.mobilenews.presentation.presentation.settings
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
-import uz.icebergsoft.mobilenews.presentation.presentation.setttings.router.SettingsRouter
+import kotlinx.coroutines.flow.*
 import uz.icebergsoft.mobilenews.domain.data.entity.settings.DayNightModeWrapper
 import uz.icebergsoft.mobilenews.domain.usecase.daynight.DayNightModeUseCase
+import uz.icebergsoft.mobilenews.presentation.presentation.settings.router.SettingsRouter
 import uz.icebergsoft.mobilenews.presentation.support.event.LoadingListEvent
 import uz.icebergsoft.mobilenews.presentation.support.event.LoadingListEvent.*
 import uz.icebergsoft.mobilenews.presentation.utils.convertToAppDelegateModeNight
@@ -23,24 +18,25 @@ class SettingsViewModel @Inject constructor(
 
     private val dayNightModeWrappers: MutableList<DayNightModeWrapper> = mutableListOf()
 
-    private val _dayNightModesLiveData = MutableLiveData<LoadingListEvent<DayNightModeWrapper>>()
-    val dayNightModesLiveData: LiveData<LoadingListEvent<DayNightModeWrapper>> =
-        _dayNightModesLiveData
+    private val _dayNightModesSharedFlow =
+        MutableSharedFlow<LoadingListEvent<DayNightModeWrapper>>()
+    val dayNightModesSharedFlow: SharedFlow<LoadingListEvent<DayNightModeWrapper>>
+        get() = _dayNightModesSharedFlow.asSharedFlow()
 
     fun getAvailableSettings() {
         useCase.getDayNightModWrappers()
-            .onStart { _dayNightModesLiveData.postValue(LoadingState) }
+            .onStart { _dayNightModesSharedFlow.emit(LoadingState) }
             .onEach {
                 dayNightModeWrappers.clear()
                 dayNightModeWrappers.addAll(it)
 
                 if (it.isNotEmpty()) {
-                    _dayNightModesLiveData.postValue(SuccessState(it))
+                    _dayNightModesSharedFlow.emit(SuccessState(it))
                 } else {
-                    _dayNightModesLiveData.postValue(EmptyState)
+                    _dayNightModesSharedFlow.emit(EmptyState)
                 }
             }
-            .catch { _dayNightModesLiveData.postValue(ErrorState(it.localizedMessage)) }
+            .catch { _dayNightModesSharedFlow.emit(ErrorState(it.localizedMessage)) }
             .launchIn(viewModelScope)
     }
 
@@ -50,7 +46,7 @@ class SettingsViewModel @Inject constructor(
         dayNightModeWrappers.forEach {
             it.isSelected = it.dayNightMode == dayNightModeWrapper.dayNightMode
         }
-        _dayNightModesLiveData.postValue(SuccessState(dayNightModeWrappers))
+        _dayNightModesSharedFlow.tryEmit(SuccessState(dayNightModeWrappers))
     }
 
     fun back() = router.back()

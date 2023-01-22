@@ -6,8 +6,12 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import uz.icebergsoft.mobilenews.R
 import uz.icebergsoft.mobilenews.databinding.FragmentArticleDetailBinding
+import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
 import uz.icebergsoft.mobilenews.presentation.global.GlobalActivity
 import uz.icebergsoft.mobilenews.presentation.presentation.detail.di.ArticleDetailDaggerComponent
 import uz.icebergsoft.mobilenews.presentation.support.event.LoadingEvent.*
@@ -30,7 +34,6 @@ internal class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail
 
         super.onCreate(savedInstanceState)
         onBackPressedDispatcher.addCallback(this) { viewModel.back() }
-        observeArticleDetail()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,49 +44,53 @@ internal class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail
             backIv.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
         }
 
+        subscribeSharedFlows()
+
         viewModel.setArticleId(checkNotNull(arguments?.getString(KEY_ARTICLE_ID)))
         viewModel.getArticleDetail()
     }
 
-    private fun observeArticleDetail() {
-        viewModel.articleDetailLiveData.observe(this) { state ->
-            when (state) {
-                is LoadingState -> {
+    private fun subscribeSharedFlows() {
+        viewModel
+            .articleDetailSharedFlow
+            .onEach { state ->
+                when (state) {
+                    is SuccessState -> setLoadedArticle(state.data)
+                    is LoadingState -> {}
+                    is ErrorState -> {}
+                    is NotFoundState -> {}
                 }
-                is ErrorState -> {
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun setLoadedArticle(article: Article) {
+        with(binding) {
+            detailImageSdv.setImageURI(article.imageUrl)
+            publishedAtTextView.text = article.publishedAt
+            titleTextView.text = article.title
+            sourceTextView.text = article.source.name
+            contentTextView.text = article.content
+
+            bookmarkIv.apply {
+                if (article.isBookmarked) setImageResource(R.drawable.ic_bookmark)
+                else setImageResource(R.drawable.ic_bookmark_border)
+            }
+
+            bookmarkIv.setOnClickListener { viewModel.updateBookmark(article) }
+
+            shareIv.setOnClickListener {
+                val shareText =
+                    "${article.title}\n\nMobile news - interesting news in your mobile.\n\n${article.url}"
+
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, shareText)
+                    type = "text/plain"
                 }
-                is NotFoundState -> {
-                }
-                is SuccessState -> {
-                    with(binding) {
-                        detailImageSdv.setImageURI(state.data.imageUrl)
-                        publishedAtTextView.text = state.data.publishedAt
-                        titleTextView.text = state.data.title
-                        sourceTextView.text = state.data.source.name
-                        contentTextView.text = state.data.content
 
-                        bookmarkIv.apply {
-                            if (state.data.isBookmarked) setImageResource(R.drawable.ic_bookmark)
-                            else setImageResource(R.drawable.ic_bookmark_border)
-                        }
-
-                        bookmarkIv.setOnClickListener { viewModel.updateBookmark(state.data) }
-
-                        shareIv.setOnClickListener {
-                            val shareText =
-                                "${state.data.title}\n\nMobile news - interesting news in your mobile.\n\n${state.data.url}"
-
-                            val sendIntent: Intent = Intent().apply {
-                                action = Intent.ACTION_SEND
-                                putExtra(Intent.EXTRA_TEXT, shareText)
-                                type = "text/plain"
-                            }
-
-                            val shareIntent = Intent.createChooser(sendIntent, "Share")
-                            startActivity(shareIntent)
-                        }
-                    }
-                }
+                val shareIntent = Intent.createChooser(sendIntent, "Share")
+                startActivity(shareIntent)
             }
         }
     }

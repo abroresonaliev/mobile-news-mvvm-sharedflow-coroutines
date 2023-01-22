@@ -1,4 +1,4 @@
-package uz.icebergsoft.mobilenews.presentation.presentation.setttings.router
+package uz.icebergsoft.mobilenews.presentation.presentation.settings.router
 
 import uz.icebergsoft.mobilenews.presentation.global.router.GlobalRouter
 import uz.icebergsoft.mobilenews.presentation.support.base.FeatureRouter

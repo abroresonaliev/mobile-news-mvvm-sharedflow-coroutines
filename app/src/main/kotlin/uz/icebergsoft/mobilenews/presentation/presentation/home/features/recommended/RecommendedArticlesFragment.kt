@@ -5,6 +5,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 import uz.icebergsoft.mobilenews.R
@@ -28,16 +31,6 @@ internal class RecommendedArticlesFragment : Fragment(R.layout.fragment_recommen
 
     private lateinit var binding: FragmentRecommendedNewsBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        RecommendedArticlesDaggerComponent
-            .create((requireActivity() as GlobalActivity).globalDaggerComponent)
-            .inject(this)
-
-        super.onCreate(savedInstanceState)
-        onBackPressedDispatcher.addCallback(this) { viewModel.back() }
-        observeLiveData()
-    }
-
     private val easyAdapter = EasyAdapter()
     private val articleController = RecommendedArticleItemController(
         itemClickListener = { viewModel.openArticleDetailScreen(it.articleId) },
@@ -48,6 +41,15 @@ internal class RecommendedArticlesFragment : Fragment(R.layout.fragment_recommen
     private val stateErrorController =
         StateErrorItemController(true) { viewModel.getRecommendedArticles() }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        RecommendedArticlesDaggerComponent
+            .create((requireActivity() as GlobalActivity).globalDaggerComponent)
+            .inject(this)
+
+        super.onCreate(savedInstanceState)
+        onBackPressedDispatcher.addCallback(this) { viewModel.back() }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRecommendedNewsBinding.bind(view)
@@ -57,21 +59,23 @@ internal class RecommendedArticlesFragment : Fragment(R.layout.fragment_recommen
             recyclerView.itemAnimator = null
         }
 
-        if (savedInstanceState == null)
-            viewModel.getRecommendedArticles()
+        subscribeSharedFlows()
     }
 
-    private fun observeLiveData() {
-        viewModel.articlesLiveData.observe(this) { state ->
-            val itemList = ItemList.create()
-            when (state) {
-                is LoadingState -> itemList.add(stateLoadingController)
-                is SuccessState -> itemList.addAll(state.data, articleController)
-                is EmptyState -> itemList.add(stateEmptyItemController)
-                is ErrorState -> itemList.add(stateErrorController)
+    private fun subscribeSharedFlows() {
+        viewModel
+            .articlesSharedFlow
+            .onEach { state ->
+                val itemList = ItemList.create()
+                when (state) {
+                    is LoadingState -> itemList.add(stateLoadingController)
+                    is SuccessState -> itemList.addAll(state.data, articleController)
+                    is EmptyState -> itemList.add(stateEmptyItemController)
+                    is ErrorState -> itemList.add(stateErrorController)
+                }
+                easyAdapter.setItems(itemList)
             }
-            easyAdapter.setItems(itemList)
-        }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     companion object {

@@ -5,13 +5,16 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import uz.icebergsoft.mobilenews.R
 import uz.icebergsoft.mobilenews.databinding.FragmentHomeBinding
 import uz.icebergsoft.mobilenews.presentation.global.GlobalActivity
 import uz.icebergsoft.mobilenews.presentation.presentation.home.di.HomeDaggerComponent
-import uz.icebergsoft.mobilenews.presentation.presentation.home.router.HomeRouter
+import uz.icebergsoft.mobilenews.presentation.presentation.home.router.HomeRouter.HomeTab
 import javax.inject.Inject
 
 internal class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -58,11 +61,9 @@ internal class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
 
+        viewModel.onFragmentCreated()
 
-        if (savedInstanceState == null)
-            viewModel.openDashboardTab(true)
-
-        observeLiveData()
+        subscribeSharedFlows()
     }
 
     override fun onResume() {
@@ -85,14 +86,17 @@ internal class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onDestroyView()
     }
 
-    private fun observeLiveData() {
-        viewModel.currentTabMutableLiveData.observe(viewLifecycleOwner) {
-            binding.bottomNavigationView.selectedItemId = when (it) {
-                HomeRouter.HomeTab.DashboardTab -> R.id.home_dashboard
-                HomeRouter.HomeTab.RecommendedTab -> R.id.home_recommended_news
-                HomeRouter.HomeTab.ReadLaterTab -> R.id.home_read_later_news
+    private fun subscribeSharedFlows() {
+        viewModel
+            .currentTabSharedFlow
+            .onEach {
+                binding.bottomNavigationView.selectedItemId = when (it) {
+                    HomeTab.DashboardTab -> R.id.home_dashboard
+                    HomeTab.RecommendedTab -> R.id.home_recommended_news
+                    HomeTab.ReadLaterTab -> R.id.home_read_later_news
+                }
             }
-        }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     companion object {
