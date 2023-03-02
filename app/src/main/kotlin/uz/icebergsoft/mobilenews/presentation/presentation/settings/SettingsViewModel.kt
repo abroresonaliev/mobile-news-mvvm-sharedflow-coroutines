@@ -3,7 +3,7 @@ package uz.icebergsoft.mobilenews.presentation.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
-import uz.icebergsoft.mobilenews.domain.data.entity.settings.DayNightModeWrapper
+import uz.icebergsoft.mobilenews.domain.data.model.settings.DayNightModeWrapper
 import uz.icebergsoft.mobilenews.domain.usecase.daynight.DayNightModeUseCase
 import uz.icebergsoft.mobilenews.presentation.presentation.settings.router.SettingsRouter
 import uz.icebergsoft.mobilenews.presentation.support.event.LoadingListEvent

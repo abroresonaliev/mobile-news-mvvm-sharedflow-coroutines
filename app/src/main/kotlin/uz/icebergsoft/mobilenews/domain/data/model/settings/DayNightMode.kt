@@ -1,4 +1,4 @@
-package uz.icebergsoft.mobilenews.domain.data.entity.settings
+package uz.icebergsoft.mobilenews.domain.data.model.settings
 
 enum class DayNightMode(val modeIndex: Int) {
     ONLY_LIGHT_MODE(1),

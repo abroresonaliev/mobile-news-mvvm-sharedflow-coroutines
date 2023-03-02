@@ -6,8 +6,8 @@ import uz.icebergsoft.mobilenews.data.datasource.database.dao.article.ArticleEnt
 import uz.icebergsoft.mobilenews.data.datasource.rest.service.ArticleRestService
 import uz.icebergsoft.mobilenews.data.mapper.entityToArticle
 import uz.icebergsoft.mobilenews.data.mapper.responseToEntity
-import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
-import uz.icebergsoft.mobilenews.domain.data.entity.article.ArticleListWrapper
+import uz.icebergsoft.mobilenews.domain.data.model.article.Article
+import uz.icebergsoft.mobilenews.domain.data.model.article.ArticleListWrapper
 import uz.icebergsoft.mobilenews.domain.data.repository.article.ArticleRepository
 import java.net.ConnectException
 import java.net.UnknownHostException

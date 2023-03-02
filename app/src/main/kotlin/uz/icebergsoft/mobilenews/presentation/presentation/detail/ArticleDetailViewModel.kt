@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
+import uz.icebergsoft.mobilenews.domain.data.model.article.Article
 import uz.icebergsoft.mobilenews.domain.usecase.article.detail.ArticleDetailUseCase
 import uz.icebergsoft.mobilenews.presentation.presentation.detail.router.ArticleDetailRouter
 import uz.icebergsoft.mobilenews.presentation.support.event.LoadingEvent

@@ -1,6 +1,6 @@
-package uz.icebergsoft.mobilenews.domain.data.entity.article
+package uz.icebergsoft.mobilenews.domain.data.model.article
 
-import uz.icebergsoft.mobilenews.domain.data.entity.source.Source
+import uz.icebergsoft.mobilenews.domain.data.model.source.Source
 
 data class Article(
     val articleId: String,

@@ -5,8 +5,8 @@ import ru.surfstudio.android.easyadapter.controller.BindableItemController
 import ru.surfstudio.android.easyadapter.holder.BindableViewHolder
 import uz.icebergsoft.mobilenews.R
 import uz.icebergsoft.mobilenews.databinding.ViewHolderDayNightModeSelectionBinding
-import uz.icebergsoft.mobilenews.domain.data.entity.settings.DayNightMode.*
-import uz.icebergsoft.mobilenews.domain.data.entity.settings.DayNightModeWrapper
+import uz.icebergsoft.mobilenews.domain.data.model.settings.DayNightMode.*
+import uz.icebergsoft.mobilenews.domain.data.model.settings.DayNightModeWrapper
 
 class DayNightModeItemController(
     private val onDayNightModeClick: (DayNightModeWrapper) -> Unit,

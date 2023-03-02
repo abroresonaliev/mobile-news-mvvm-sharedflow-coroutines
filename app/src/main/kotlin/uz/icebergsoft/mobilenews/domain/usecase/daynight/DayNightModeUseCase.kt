@@ -1,7 +1,7 @@
 package uz.icebergsoft.mobilenews.domain.usecase.daynight
 
 import kotlinx.coroutines.flow.Flow
-import uz.icebergsoft.mobilenews.domain.data.entity.settings.DayNightModeWrapper
+import uz.icebergsoft.mobilenews.domain.data.model.settings.DayNightModeWrapper
 
 interface DayNightModeUseCase {
 

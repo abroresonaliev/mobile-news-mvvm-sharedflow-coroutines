@@ -1,7 +1,7 @@
 package uz.icebergsoft.mobilenews.data.datasource.preference
 
 import android.content.SharedPreferences
-import uz.icebergsoft.mobilenews.domain.data.entity.settings.DayNightMode
+import uz.icebergsoft.mobilenews.domain.data.model.settings.DayNightMode
 
 internal class DayNightModePreference(
     private val sharedPreferences: SharedPreferences

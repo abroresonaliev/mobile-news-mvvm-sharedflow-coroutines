@@ -2,7 +2,7 @@ package uz.icebergsoft.mobilenews.domain.usecase.article.dashboard
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
-import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
+import uz.icebergsoft.mobilenews.domain.data.model.article.Article
 import uz.icebergsoft.mobilenews.presentation.support.event.LoadingListEvent
 
 interface DashboardArticlesUseCase {

@@ -3,7 +3,7 @@ package uz.icebergsoft.mobilenews.data.datasource.rest.service
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Query
-import uz.icebergsoft.mobilenews.domain.data.entity.article.ArticleListResponse
+import uz.icebergsoft.mobilenews.data.model.article.ArticleListResponse
 
 internal interface ArticleRestService {
     

@@ -3,7 +3,7 @@ package uz.icebergsoft.mobilenews.presentation.presentation.home.features.dashbo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
-import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
+import uz.icebergsoft.mobilenews.domain.data.model.article.Article
 import uz.icebergsoft.mobilenews.domain.usecase.article.dashboard.DashboardArticlesUseCase
 import uz.icebergsoft.mobilenews.presentation.global.router.GlobalRouter
 import uz.icebergsoft.mobilenews.presentation.support.event.LoadingListEvent

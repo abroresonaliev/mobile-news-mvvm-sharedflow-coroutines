@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.launchIn
-import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
+import uz.icebergsoft.mobilenews.domain.data.model.article.Article
 import uz.icebergsoft.mobilenews.domain.usecase.article.recommended.RecommendedArticlesUseCase
 import uz.icebergsoft.mobilenews.presentation.global.router.GlobalRouter
 import uz.icebergsoft.mobilenews.presentation.presentation.home.router.HomeRouter

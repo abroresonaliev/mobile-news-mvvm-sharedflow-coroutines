@@ -1,10 +1,10 @@
-package uz.icebergsoft.mobilenews.domain.data.entity.source
+package uz.icebergsoft.mobilenews.domain.data.model.source
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class SourceResponse(
+data class Source(
 
     @SerialName("id")
     val id: String?,

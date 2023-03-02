@@ -1,11 +1,11 @@
 package uz.icebergsoft.mobilenews.data.mapper
 
 import uz.icebergsoft.mobilenews.data.utils.date.toFormattedDate
-import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
-import uz.icebergsoft.mobilenews.domain.data.entity.article.ArticleEntity
-import uz.icebergsoft.mobilenews.domain.data.entity.source.Source
-import uz.icebergsoft.mobilenews.domain.data.entity.article.ArticleResponse
-import uz.icebergsoft.mobilenews.domain.data.entity.source.SourceResponse
+import uz.icebergsoft.mobilenews.domain.data.model.article.Article
+import uz.icebergsoft.mobilenews.data.model.article.ArticleEntity
+import uz.icebergsoft.mobilenews.domain.data.model.source.Source
+import uz.icebergsoft.mobilenews.data.model.article.ArticleResponse
+import uz.icebergsoft.mobilenews.data.model.source.SourceResponse
 
 internal fun ArticleEntity.entityToArticle(): Article =
     Article(

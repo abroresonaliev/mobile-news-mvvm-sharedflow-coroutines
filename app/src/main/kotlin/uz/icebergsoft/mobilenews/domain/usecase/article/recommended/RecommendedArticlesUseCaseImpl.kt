@@ -2,8 +2,7 @@ package uz.icebergsoft.mobilenews.domain.usecase.article.recommended
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
-import uz.icebergsoft.mobilenews.domain.data.entity.article.ArticleListWrapper
+import uz.icebergsoft.mobilenews.domain.data.model.article.Article
 import uz.icebergsoft.mobilenews.domain.data.repository.article.ArticleRepository
 import uz.icebergsoft.mobilenews.domain.usecase.bookmark.BookmarkUseCase
 import uz.icebergsoft.mobilenews.presentation.support.event.LoadingListEvent

@@ -5,7 +5,7 @@ import ru.surfstudio.android.easyadapter.controller.BindableItemController
 import ru.surfstudio.android.easyadapter.holder.BindableViewHolder
 import uz.icebergsoft.mobilenews.R
 import uz.icebergsoft.mobilenews.databinding.ViewHolderReadLaterArticleBinding
-import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
+import uz.icebergsoft.mobilenews.domain.data.model.article.Article
 
 internal class ReadLaterArticleItemController(
     private val itemClickListener: (product: Article) -> Unit,

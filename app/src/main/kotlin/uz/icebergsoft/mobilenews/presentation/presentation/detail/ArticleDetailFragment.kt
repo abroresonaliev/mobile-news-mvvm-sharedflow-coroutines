@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import uz.icebergsoft.mobilenews.R
 import uz.icebergsoft.mobilenews.databinding.FragmentArticleDetailBinding
-import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
+import uz.icebergsoft.mobilenews.domain.data.model.article.Article
 import uz.icebergsoft.mobilenews.presentation.global.GlobalActivity
 import uz.icebergsoft.mobilenews.presentation.presentation.detail.di.ArticleDetailDaggerComponent
 import uz.icebergsoft.mobilenews.presentation.support.event.LoadingEvent.*

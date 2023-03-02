@@ -1,8 +1,8 @@
 package uz.icebergsoft.mobilenews.domain.data.repository.article
 
 import kotlinx.coroutines.flow.Flow
-import uz.icebergsoft.mobilenews.domain.data.entity.article.Article
-import uz.icebergsoft.mobilenews.domain.data.entity.article.ArticleListWrapper
+import uz.icebergsoft.mobilenews.domain.data.model.article.Article
+import uz.icebergsoft.mobilenews.domain.data.model.article.ArticleListWrapper
 
 interface ArticleRepository {
 

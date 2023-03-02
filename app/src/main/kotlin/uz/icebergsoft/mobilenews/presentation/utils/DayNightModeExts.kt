@@ -1,7 +1,7 @@
 package uz.icebergsoft.mobilenews.presentation.utils
 
 import androidx.appcompat.app.AppCompatDelegate
-import uz.icebergsoft.mobilenews.domain.data.entity.settings.DayNightMode
+import uz.icebergsoft.mobilenews.domain.data.model.settings.DayNightMode
 
 fun DayNightMode.convertToAppDelegateModeNight(): Int =
     when (this) {

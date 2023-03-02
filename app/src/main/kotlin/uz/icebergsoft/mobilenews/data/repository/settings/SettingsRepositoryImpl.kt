@@ -3,7 +3,7 @@ package uz.icebergsoft.mobilenews.data.repository.settings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import uz.icebergsoft.mobilenews.data.datasource.preference.DayNightModePreference
-import uz.icebergsoft.mobilenews.domain.data.entity.settings.DayNightMode
+import uz.icebergsoft.mobilenews.domain.data.model.settings.DayNightMode
 import uz.icebergsoft.mobilenews.domain.data.repository.settings.SettingsRepository
 import javax.inject.Inject
 
